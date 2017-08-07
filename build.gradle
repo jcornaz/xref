@@ -25,9 +25,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 
-//    testCompile 'io.kotlintest:kotlintest:2.0.5'
-
-    testCompile 'org.amshove.kluent:kluent:1.26'
+    testCompile 'io.kotlintest:kotlintest:2.0.5'
 
     testCompile 'org.jetbrains.spek:spek-api:1.1.2'
     testCompile 'org.junit.platform:junit-platform-console:1.0.0-M4'

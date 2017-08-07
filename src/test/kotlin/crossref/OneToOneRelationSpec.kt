@@ -3,7 +3,7 @@ package crossref
 import crossref.impl.SimpleOneToOneRelation
 import crossref.impl.left
 import crossref.impl.right
-import org.amshove.kluent.shouldBe
+import io.kotlintest.matchers.shouldBe
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
@@ -22,7 +22,7 @@ private class B {
     var a: A? by A2B.left()
 }
 
-class OneToOneRelationTest : Spek({
+object OneToOneRelationTest : Spek({
 
     given("A and B two classes with a OneToOne relation") {
         // See declaration above
@@ -66,7 +66,7 @@ class OneToOneRelationTest : Spek({
             }
 
             given("a and b cross referenced") {
-                a.b = b
+                beforeEachTest { a.b = b }
 
                 on("set a referencing null") {
                     a.b = null
