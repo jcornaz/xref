@@ -1,12 +1,13 @@
 package crossref
 
+import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 open class OneToOneRelation<Left : Any, Right : Any> {
 
-    private val rightByLeft = HashMap<Left, Right>()
-    private val leftByRight = HashMap<Right, Left>()
+    private val rightByLeft = IdentityHashMap<Left, Right>()
+    private val leftByRight = IdentityHashMap<Right, Left>()
 
     fun set(left: Left?, right: Right?) = synchronized(this) {
         if (left != null) {
