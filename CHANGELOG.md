@@ -4,4 +4,5 @@
 * Relations
     * OneToOne
     * OneToMany
+    * NotNullOneToMany
     * ManyToMany
