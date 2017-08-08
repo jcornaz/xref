@@ -8,8 +8,7 @@ open class OneToOneRelation<Left : Any, Right : Any> {
     private val rightByLeft = HashMap<Left, Right>()
     private val leftByRight = HashMap<Right, Left>()
 
-    @Synchronized
-    fun set(left: Left?, right: Right?) {
+    fun set(left: Left?, right: Right?) = synchronized(this) {
         if (left != null) {
             rightByLeft[left]?.let {
                 leftByRight -= it

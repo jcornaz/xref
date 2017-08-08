@@ -9,8 +9,7 @@ open class OneToManyRelation<Left : Any, Right : Any> {
     private val rightsByLeft = HashMap<Left, Set<Right>>()
     private val leftByRight = HashMap<Right, Left>()
 
-    @Synchronized
-    fun set(right: Right, left: Left?) {
+    fun set(right: Right, left: Left?) = synchronized(this) {
 
         leftByRight[right]?.let {
             rightsByLeft[it] = rightsByLeft[it].orEmpty() - right
@@ -24,11 +23,13 @@ open class OneToManyRelation<Left : Any, Right : Any> {
         }
     }
 
-    @Synchronized
-    fun getLeft(right: Right) = leftByRight[right]
+    fun getLeft(right: Right) = synchronized(this) {
+        leftByRight[right]
+    }
 
-    @Synchronized
-    fun getRight(left: Left) = rightsByLeft[left]?.let { HashSet(it) }.orEmpty()
+    fun getRight(left: Left) = synchronized(this) {
+        rightsByLeft[left]?.let { HashSet(it) }.orEmpty()
+    }
 
     fun right() = object : ReadWriteProperty<Left, Set<Right>> {
         override fun getValue(thisRef: Left, property: KProperty<*>) = getRight(thisRef)

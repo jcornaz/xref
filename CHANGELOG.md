@@ -4,3 +4,4 @@
 * Relations
     * OneToOne
     * OneToMany
+    * ManyToMany

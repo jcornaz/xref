@@ -20,7 +20,7 @@ class OneToOneRelationTest {
     lateinit var b: B
 
     @Before
-    fun setUpContext() {
+    fun setUp() {
 
         // given
         a = A()

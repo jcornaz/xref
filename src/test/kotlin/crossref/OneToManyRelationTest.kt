@@ -11,11 +11,11 @@ class OneToManyRelationTest {
     object ParentChildRelation : OneToManyRelation<Parent, Child>()
 
     class Parent {
-        var children by ParentChildRelation.children()
+        var children: Set<Child> by ParentChildRelation.children()
     }
 
     class Child {
-        var parent by ParentChildRelation.parent()
+        var parent: Parent? by ParentChildRelation.parent()
     }
 
     lateinit var parent: Parent
