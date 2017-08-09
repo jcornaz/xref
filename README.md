@@ -9,31 +9,32 @@
 [![Issues](https://img.shields.io/github/issues/jcornaz/xref.svg)](https://github.com/jcornaz/xref/issues)
 [![Pull requests](https://img.shields.io/github/issues-pr/jcornaz/xref.svg)](https://github.com/jcornaz/xref/pulls)
 
-XRef is a kotlin library which allows management of cross references with simple property delegation
+XRef is a kotlin library that allows management of cross references with simple property delegation
 
 ## Use
 ### Declare a relation
 Here is an example of a parent-child relation (which is one-to-many)
 ```kotlin
-// Define the relation itself. References will be managed here.
+// Define the relation. References will be managed here.
 object ParentChildRelation : OneToMany<Parent, Child>()
 
 // Declare the parent class
 class Parent {
 
-    // Delegate the children property to the relation
+    // Delegate the children property to the relation management
     var children: Set<Child> by ParentChildRelation.right()
 }
 
 // Declare the child class
 class Child {
 
-    // Delegate the parent property to the relation
+    // Delegate the parent property to the relation management
     var parent: Parent? by ParentChildRelation.left()
 }
 ```
 
-And that's it ! Now you can assign a parent to a child, or add children to a parent. It will be always kept coherent by XRef.
+And that's it ! Now you can assign a parent to a child, or add children to a parent. It will always be kept coherent by XRef.
+
 ### Use the relation
 Once you have the relation defined, you can use it as you would with standard properties.
 
@@ -59,11 +60,11 @@ Currently XRef support 4 types of relations :
 
 ## Motivation
 Even if it is always simpler to use immutable instances and not cross referenced objects.
-Sometime, we have to create mutable class that can be cross referenced.
+Sometime, we have to create mutable classes that can be cross referenced.
 In these cases, writing code that always keep a coherent state in your references can quickly generate boilerplate code,
 and demand to invest unnecessary time to make sure it is well tested and reliable.
 
-The goal of this project is to centralize the reference management code and provide kotlin delegation properties.
+The goal of this project is to centralize the reference management code and provide kotlin delegation properties for that.
 Then there cross referencing don't generate more boilerplate code, become reliable AND quick and easy to write.
 
 ## Add XRef to your project
@@ -77,7 +78,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.jcornaz:xref:master-SNAPSHOT'
+    compile 'com.github.jcornaz:xref:v1.0-RC1'
 }
 ```
 
