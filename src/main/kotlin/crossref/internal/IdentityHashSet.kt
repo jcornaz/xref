@@ -5,6 +5,7 @@ import java.util.*
 internal class IdentityHashSet<E> private constructor(private val map: IdentityHashMap<E, Unit>) : MutableSet<E> by map.keys {
 
     constructor() : this(IdentityHashMap())
+    constructor(elements: Collection<E>) : this(IdentityHashMap<E, Unit>().apply { putAll(elements.map { it to Unit }) })
 
     override fun add(element: E): Boolean {
         val result = element !in map

@@ -36,10 +36,11 @@ open class OneToManyRelation<Left : Any, Right : Any> {
     fun right() = object : ReadWriteProperty<Left, Set<Right>> {
         override fun getValue(thisRef: Left, property: KProperty<*>) = getRight(thisRef)
         override fun setValue(thisRef: Left, property: KProperty<*>, value: Set<Right>) {
-            val current = getValue(thisRef, property)
+            val currentValues: IdentityHashSet<Right> = rightsByLeft[thisRef] ?: IdentityHashSet()
+            val newValues = IdentityHashSet(value)
 
-            current.filter { it !in value }.forEach { set(it, null) }
-            value.filter { it !in current }.forEach { set(it, thisRef) }
+            currentValues.filter { it !in newValues }.forEach { set(it, null) }
+            newValues.filter { it !in currentValues }.forEach { set(it, thisRef) }
         }
     }
 

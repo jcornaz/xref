@@ -43,10 +43,11 @@ open class ManyToManyRelation<Left : Any, Right : Any> {
         override fun getValue(thisRef: Left, property: KProperty<*>) = getRight(thisRef)
 
         override fun setValue(thisRef: Left, property: KProperty<*>, value: Set<Right>) {
-            val current = getValue(thisRef, property)
+            val currentValues: IdentityHashSet<Right> = rightsByLeft[thisRef] ?: IdentityHashSet()
+            val newValues = IdentityHashSet(value)
 
-            current.filter { it !in value }.forEach { remove(thisRef, it) }
-            value.filter { it !in current }.forEach { add(thisRef, it) }
+            currentValues.filter { it !in newValues }.forEach { remove(thisRef, it) }
+            newValues.filter { it !in currentValues }.forEach { add(thisRef, it) }
         }
     }
 }
