@@ -1,5 +1,6 @@
 package crossref
 
+import crossref.internal.IdentityHashSet
 import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

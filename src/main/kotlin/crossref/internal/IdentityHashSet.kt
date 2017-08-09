@@ -1,4 +1,4 @@
-package crossref
+package crossref.internal
 
 import java.util.*
 
