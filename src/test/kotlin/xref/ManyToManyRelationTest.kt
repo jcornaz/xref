@@ -1,4 +1,4 @@
-package crossref
+package xref
 
 import io.kotlintest.matchers.beEmpty
 import io.kotlintest.matchers.should

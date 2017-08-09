@@ -23,10 +23,13 @@
  *
  */
 
-package crossref.internal
+package xref.internal
 
 import java.util.*
 
+/**
+ * A specific implementation of a [Set] that use reference identity instead of [hashCode] and [equals]
+ */
 internal class IdentityHashSet<E> private constructor(private val map: IdentityHashMap<E, Unit>) : MutableSet<E> by map.keys {
 
     constructor() : this(IdentityHashMap())

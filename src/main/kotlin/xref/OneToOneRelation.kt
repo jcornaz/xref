@@ -23,17 +23,21 @@
  *
  */
 
-package crossref
+package xref
 
 import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+/**
+ * A one-to-one relation
+ */
 open class OneToOneRelation<Left : Any, Right : Any> {
 
     private val rightByLeft = IdentityHashMap<Left, Right>()
     private val leftByRight = IdentityHashMap<Right, Left>()
 
+    /** Set a relation between two instances */
     fun set(left: Left?, right: Right?) = synchronized(this) {
         if (left != null) {
             rightByLeft[left]?.let {
@@ -58,19 +62,23 @@ open class OneToOneRelation<Left : Any, Right : Any> {
         }
     }
 
+    /** Return the element on the left side of the relation */
     fun getLeft(right: Right): Left? = synchronized(this) {
         leftByRight[right]
     }
 
+    /** Return the element on the right side of the relation */
     fun getRight(left: Left): Right? = synchronized(this) {
         rightByLeft[left]
     }
 
+    /** Return a property bound to the right side of the relation */
     fun right() = object : ReadWriteProperty<Left, Right?> {
         override fun getValue(thisRef: Left, property: KProperty<*>) = getRight(thisRef)
         override fun setValue(thisRef: Left, property: KProperty<*>, value: Right?) = set(thisRef, value)
     }
 
+    /** Return a property bound to the left side of the relation */
     fun left() = object : ReadWriteProperty<Right, Left?> {
         override fun getValue(thisRef: Right, property: KProperty<*>) = getLeft(thisRef)
         override fun setValue(thisRef: Right, property: KProperty<*>, value: Left?) = set(value, thisRef)

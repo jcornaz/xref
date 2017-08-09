@@ -1,12 +1,97 @@
-# CrossRef
+# XRef
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://jcornaz.github.io/xref/doc/1.0/xref)
+[![JitPack](https://jitpack.io/v/jcornaz/xref.svg)](https://jitpack.io/#jcornaz/xref)
 [![Build Status](https://travis-ci.org/jcornaz/xref.svg?branch=master)](https://travis-ci.org/jcornaz/xref)
-[![Code covertage](https://codecov.io/gh/jcornaz/xref/branch/master/graph/badge.svg)](https://codecov.io/gh/jcornaz/xref)
+[![Code coverage](https://codecov.io/gh/jcornaz/xref/branch/master/graph/badge.svg)](https://codecov.io/gh/jcornaz/xref)
 [![Code quality](https://codebeat.co/badges/2bab1c10-221a-4188-8250-9b0b12cefbb0)](https://codebeat.co/projects/github-com-jcornaz-xref-master)
 
-A kotlin library which allows management of cross references between instances with simple property delegation
+[![KDoc](https://img.shields.io/badge/kdoc-1.0-blue.svg)](https://jcornaz.github.io/xref/doc/1.0/xref/xref/index.html)
+[![Issues](https://img.shields.io/github/issues/jcornaz/xref.svg)](https://github.com/jcornaz/xref/issues)
+[![Pull requests](https://img.shields.io/github/issues-pr/jcornaz/xref.svg)](https://github.com/jcornaz/xref/pulls)
 
-## Status
-First release planned for Q3 2017
+XRef is a kotlin library which allows management of cross references with simple property delegation
+
+## Use
+### Declare a relation
+Here is an example of a parent-child relation (which is one-to-many)
+```kotlin
+// Define the relation itself. References will be managed here.
+object ParentChildRelation : OneToMany<Parent, Child>()
+
+// Declare the parent class
+class Parent {
+
+    // Delegate the children property to the relation
+    var children: Set<Child> by ParentChildRelation.right()
+}
+
+// Declare the child class
+class Child {
+
+    // Delegate the parent property to the relation
+    var parent: Parent? by ParentChildRelation.left()
+}
+```
+
+And that's it ! Now you can assign a parent to a child, or add children to a parent. It will be always kept coherent by XRef.
+### Use the relation
+Once you have the relation defined, you can use it as you would with standard properties.
+
+```kotlin
+// given
+val parent = Parent()
+val children = setOf(Child(), Child())
+
+// when
+parent.children = children
+
+// then
+parent.children shouldBe children
+children.forEach { it shouldBe parent }
+```
+
+## Supported relations
+Currently XRef support 4 types of relations :
+* **ManyToMany**
+* **OneToOne**
+* **OneToMany**
+* **NotNullOneToMany** *(in a parent-child scenario, it would means that the child has always a parent)*
+
+## Motivation
+Even if it is always simpler to use immutable instances and not cross referenced objects.
+Sometime, we have to create mutable class that can be cross referenced.
+In these cases, writing code that always keep a coherent state in your references can quickly generate boilerplate code,
+and demand to invest unnecessary time to make sure it is well tested and reliable.
+
+The goal of this project is to centralize the reference management code and provide kotlin delegation properties.
+Then there cross referencing don't generate more boilerplate code, become reliable AND quick and easy to write.
+
+## Add XRef to your project
+Get the artifacts from [jitpack](https://jitpack.io/#jcornaz/xref)
+
+### With gradle
+
+```gradle
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compile 'com.github.jcornaz:xref:master-SNAPSHOT'
+}
+```
+
+### With maven, sbt or leiningen
+Follow theses [instructions](https://jitpack.io/#jcornaz/xref)
+
+## Test
+Simply checkout this repository and run the gradle task :
+
+```bash
+./gradlew check
+```
+
+The tests are located in `src/kotlin/xref/`
 
 ## License
 

@@ -23,19 +23,24 @@
  *
  */
 
-package crossref
+package xref
 
-import crossref.internal.IdentityHashSet
+import xref.internal.IdentityHashSet
 import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-
+/**
+ * A one-to-many relation
+ *
+ * Unlike [NotNullOneToManyRelation], this relation allows instances of the right side to have no reference to the left side
+ */
 open class OneToManyRelation<Left : Any, Right : Any> {
 
     private val rightsByLeft = IdentityHashMap<Left, IdentityHashSet<Right>>()
     private val leftByRight = IdentityHashMap<Right, Left>()
 
+    /** Set a relation between two instances */
     fun set(right: Right, left: Left?) = synchronized(this) {
 
         leftByRight[right]?.let {
@@ -50,14 +55,17 @@ open class OneToManyRelation<Left : Any, Right : Any> {
         }
     }
 
-    fun getLeft(right: Right) = synchronized(this) {
+    /** Return the element on the left side of the relation */
+    fun getLeft(right: Right): Left? = synchronized(this) {
         leftByRight[right]
     }
 
-    fun getRight(left: Left) = synchronized(this) {
+    /** Return the elements on the right side of the relation */
+    fun getRight(left: Left): Set<Right> = synchronized(this) {
         rightsByLeft[left]?.toSet().orEmpty()
     }
 
+    /** Return a property bound to the right side of the relation */
     fun right() = object : ReadWriteProperty<Left, Set<Right>> {
         override fun getValue(thisRef: Left, property: KProperty<*>) = getRight(thisRef)
         override fun setValue(thisRef: Left, property: KProperty<*>, value: Set<Right>) {
@@ -69,6 +77,7 @@ open class OneToManyRelation<Left : Any, Right : Any> {
         }
     }
 
+    /** Return a property bound to the left side of the relation */
     fun left() = object : ReadWriteProperty<Right, Left?> {
         override fun getValue(thisRef: Right, property: KProperty<*>) = getLeft(thisRef)
         override fun setValue(thisRef: Right, property: KProperty<*>, value: Left?) {
@@ -76,6 +85,21 @@ open class OneToManyRelation<Left : Any, Right : Any> {
         }
     }
 
+    /**
+     * Return a property bound to the right side of the relation
+     *
+     * It is only an alias of [right]
+     *
+     * It is provided to allow better readability when needed as the right side of a one-to-many relation often means 'children'
+     */
     fun children() = right()
+
+    /**
+     * Return a property bound to the left side of the relation
+     *
+     * It is only an alias of [right]
+     *
+     * It is provided to allow better readability when needed as the left side of a one-to-many relation often means 'parent'
+     */
     fun parent() = left()
 }

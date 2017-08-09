@@ -23,25 +23,34 @@
  *
  */
 
-package crossref
+package xref
 
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+/**
+ * A one to many relation, where instances of the right side always have a reference to the left side
+ */
 open class NotNullOneToManyRelation<Left : Any, Right : Any> {
 
     private val nullableRelation = OneToManyRelation<Left, Right>()
 
+    /** Set a relation between two instances */
     fun set(right: Right, left: Left) = nullableRelation.set(right, left)
 
-    fun getLeft(right: Right) = nullableRelation.getLeft(right) ?: throw Exception("unknown right reference : $right")
-    fun getRight(left: Left) = nullableRelation.getRight(left)
+    /** Return the element on the left side of the relation */
+    fun getLeft(right: Right): Left = nullableRelation.getLeft(right) ?: throw Exception("unknown right reference : $right")
 
+    /** Return the elements on the right side of the relation */
+    fun getRight(left: Left): Set<Right> = nullableRelation.getRight(left)
+
+    /** Return a property bound to the right side of the relation */
     fun right() = object : ReadOnlyProperty<Left, Set<Right>> {
         override fun getValue(thisRef: Left, property: KProperty<*>) = getRight(thisRef)
     }
 
+    /** Return a property bound to the left side of the relation */
     fun left(ref: Right, initialValue: Left) = object : ReadWriteProperty<Right, Left> {
 
         init {
@@ -54,6 +63,21 @@ open class NotNullOneToManyRelation<Left : Any, Right : Any> {
         }
     }
 
+    /**
+     * Return a property bound to the right side of the relation
+     *
+     * It is only an alias of [right]
+     *
+     * It is provided to allow better readability when needed as the right side of a one-to-many relation often means 'children'
+     */
     fun children() = right()
+
+    /**
+     * Return a property bound to the left side of the relation
+     *
+     * It is only an alias of [right]
+     *
+     * It is provided to allow better readability when needed as the left side of a one-to-many relation often means 'parent'
+     */
     fun parent(ref: Right, initialValue: Left) = left(ref, initialValue)
 }

@@ -1,4 +1,4 @@
-package crossref
+package xref
 
 import io.kotlintest.matchers.shouldBe
 import org.junit.Before

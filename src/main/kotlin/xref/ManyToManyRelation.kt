@@ -23,37 +23,45 @@
  *
  */
 
-package crossref
+package xref
 
-import crossref.internal.IdentityHashSet
+import xref.internal.IdentityHashSet
 import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+/**
+ * A many-to-many relation
+ */
 open class ManyToManyRelation<Left : Any, Right : Any> {
 
     private val rightsByLeft = IdentityHashMap<Left, IdentityHashSet<Right>>()
     private val leftsByRight = IdentityHashMap<Right, IdentityHashSet<Left>>()
 
+    /** Add a relation between two instances */
     fun add(left: Left, right: Right) {
         rightsByLeft.computeIfAbsent(left) { IdentityHashSet() }.add(right)
         leftsByRight.computeIfAbsent(right) { IdentityHashSet() }.add(left)
     }
 
+    /** Remove a relation between two instances */
     fun remove(left: Left, right: Right) {
         rightsByLeft[left]?.remove(right)
         leftsByRight[right]?.remove(left)
     }
 
+    /** Return the elements on the left side of the relation */
     fun getLeft(right: Right): Set<Left> = synchronized(this) {
         leftsByRight[right]?.toSet().orEmpty()
     }
 
+    /** Return the elements on the right side of the relation */
     fun getRight(left: Left): Set<Right> = synchronized(this) {
         rightsByLeft[left]?.toSet().orEmpty()
     }
 
-    fun left(): ReadWriteProperty<Right, Set<Left>> = object : ReadWriteProperty<Right, Set<Left>> {
+    /** Return a property bound to the left side of the relation */
+    fun left() = object : ReadWriteProperty<Right, Set<Left>> {
         override fun getValue(thisRef: Right, property: KProperty<*>) = getLeft(thisRef)
 
         override fun setValue(thisRef: Right, property: KProperty<*>, value: Set<Left>) {
@@ -64,7 +72,8 @@ open class ManyToManyRelation<Left : Any, Right : Any> {
         }
     }
 
-    fun right(): ReadWriteProperty<Left, Set<Right>> = object : ReadWriteProperty<Left, Set<Right>> {
+    /** Return a property bound to the right side of the relation */
+    fun right() = object : ReadWriteProperty<Left, Set<Right>> {
         override fun getValue(thisRef: Left, property: KProperty<*>) = getRight(thisRef)
 
         override fun setValue(thisRef: Left, property: KProperty<*>, value: Set<Right>) {
