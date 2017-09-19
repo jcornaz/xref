@@ -48,7 +48,7 @@ parent.children = children
 
 // then
 parent.children shouldBe children
-children.forEach { it shouldBe parent }
+children.forEach { it.parent shouldBe parent }
 ```
 
 ## Supported relations
@@ -59,7 +59,7 @@ Currently XRef support 4 types of relations :
 * **NotNullOneToMany** *(in a parent-child scenario, it would means that the child has always a parent)*
 
 ## Motivation
-Even if it is always simpler to use immutable instances and not cross referenced objects.
+Even if it is always simpler to use immutable instances and not cross reference objects.
 Sometime, we have to create mutable classes that can be cross referenced.
 In these cases, writing code that always keep a coherent state in your references can quickly generate boilerplate code,
 and demand to invest unnecessary time to make sure it is well tested and reliable.
