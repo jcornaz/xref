@@ -1,17 +1,23 @@
 # XRef
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://jcornaz.github.io/xref/doc/1.0/xref)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Project status](https://img.shields.io/badge/status-discontinued-lightgray.svg)](https://gist.githubusercontent.com/jcornaz/46736c3d1f21b4c929bd97549b7406b2/raw/ProjectStatusFlow)
 [![JitPack](https://jitpack.io/v/jcornaz/xref.svg)](https://jitpack.io/#jcornaz/xref)
 [![Build Status](https://travis-ci.org/jcornaz/xref.svg?branch=master)](https://travis-ci.org/jcornaz/xref)
 [![Code coverage](https://codecov.io/gh/jcornaz/xref/branch/master/graph/badge.svg)](https://codecov.io/gh/jcornaz/xref)
-[![Code quality](https://codebeat.co/badges/2bab1c10-221a-4188-8250-9b0b12cefbb0)](https://codebeat.co/projects/github-com-jcornaz-xref-master)
+[![Code quality](https://codebeat.co/badges/d7377041-eddf-4d30-bb04-81d91ba2b69b)](https://codebeat.co/projects/github-com-jcornaz-xref-master)
 
-[![KDoc](https://img.shields.io/badge/kdoc-1.0-blue.svg)](https://jcornaz.github.io/xref/doc/1.0/xref/xref/index.html)
-[![Issues](https://img.shields.io/github/issues/jcornaz/xref.svg)](https://github.com/jcornaz/xref/issues)
-[![Pull requests](https://img.shields.io/github/issues-pr/jcornaz/xref.svg)](https://github.com/jcornaz/xref/pulls)
+XRef is a kotlin library allowing management of cross references via kotlin property delegation
 
-XRef is a kotlin library that allows management of cross references with simple property delegation
+## Project status
+This project is discontinued. It will be no longer maintained and no support will be provided.
+
+The reason, is that it is less usefull as expected in practice. Usually good design would tend to create immuatable data structures and service to use them. So the need of auto-managed relation is almost inexistant.
+
+Anyone is free to read, study, modify and to create derivated products.
 
 ## Use
+KDoc is published here: https://jcornaz.github.io/xref/doc/1.0/xref/xref/index.html
+
 ### Declare a relation
 Here is an example of a parent-child relation (which is one-to-many)
 ```kotlin
@@ -74,6 +80,7 @@ Get the artifacts from [jitpack](https://jitpack.io/#jcornaz/xref)
 
 ```gradle
 repositories {
+    jcenter()
     maven { url 'https://jitpack.io' }
 }
 
@@ -84,38 +91,3 @@ dependencies {
 
 ### With maven, sbt or leiningen
 Follow theses [instructions](https://jitpack.io/#jcornaz/xref)
-
-## Test
-Simply checkout this repository and run the gradle task :
-
-```bash
-./gradlew check
-```
-
-The tests are located in `src/kotlin/xref/`
-
-## License
-
-MIT License
-
-Copyright (c) 2017 Jonathan Cornaz
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
